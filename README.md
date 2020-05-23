@@ -10,4 +10,4 @@ Check [the wiki](https://github.com/ymkl/project-jaguar/wiki) for information re
 
 ## License
 
-All patches included in `project-jaguar` by [Dr. Skiddie Technologies](https://playground-77.co.za) are licensed under [Apache License v2.0, January 2004](http://www.apache.org/licenses/). Permissions beyond the scope of this license may be available at https://playground-77.co.za/contact
+All patches included in `project-jaguar` by [Dr. Skiddie Technologies](https://playground-77.co.za) are licensed under [Apache License v2.0, January 2004](https://www.apache.org/licenses/LICENSE-2.0). Permissions beyond the scope of this license may be available at https://playground-77.co.za/contact
