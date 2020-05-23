@@ -6,7 +6,7 @@ A featureful repository that demo's various techs and tools used within [Yamkela
 
 ## Documentation
 
-Check [the wiki](https://github.com/ymkl/project-jaguar/wiki) for information of setting up and confuguring the tools used @home monitorig solution.
+Check [the wiki](https://github.com/ymkl/project-jaguar/wiki) for information regarding the setup and configuration of the tools used @home monitorig solution.
 
 ## License
 
