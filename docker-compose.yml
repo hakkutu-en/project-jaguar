@@ -1,0 +1,42 @@
+version: '3'
+services:
+    node_exporter:
+        image: prom/node-exporter
+        ports: 9100:9100
+        restart: always
+        network: host
+        volumes:
+            - "/:/hostfs:ro,rslave"
+    prometheus:
+        depends_on:
+            - node_exporter
+        image: prom/prometheus
+        ports:
+            - 9090:9090
+        restart: always
+        network: host
+        volumes:
+            - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+            - /data/prometheus:/data/prometheus
+    grafana:
+        depends_on:
+            - prometheus
+        image: grafana/grafana
+        ports:
+            - 3000:3000
+        restart: always
+        network: host
+
+
+# Node exporter
+# docker run -d --name node_exporter -p 9100:9100 \
+# --user 998:998 -v "/:/hostfs:ro,rslave" --network=host prom/node-exporter --path.rootfs=/hostfs
+
+# Prom
+# docker run -d --name prometheus -p 9090:9090 --user 999:999 --network=host \
+# -v /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+# -v /data/prometheus:/data/prometheus prom/prometheus --config.file="/etc/prometheus/prometheus.yml" \
+# --storage.tsdb.path="/data/prometheus"
+
+# Grafana
+# docker run -d --name grafana -p 3000:3000 --user 997:997 --network=host grafana/grafana
