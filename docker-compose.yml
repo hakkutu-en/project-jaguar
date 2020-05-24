@@ -1,42 +1,65 @@
 version: '3'
 services:
-    node_exporter:
-        image: prom/node-exporter
-        ports: 9100:9100
-        restart: always
-        network: host
-        volumes:
-            - "/:/hostfs:ro,rslave"
-    prometheus:
-        depends_on:
-            - node_exporter
-        image: prom/prometheus
-        ports:
-            - 9090:9090
-        restart: always
-        network: host
-        volumes:
-            - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-            - /data/prometheus:/data/prometheus
-    grafana:
-        depends_on:
-            - prometheus
-        image: grafana/grafana
-        ports:
-            - 3000:3000
-        restart: always
-        network: host
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - 8080:9090
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus/data
+    volumes:
+    - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    - data:/prometheus/data
+    depends_on:
+      - cadvisor
+      - node-exporter
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    deploy:
+      mode: global
+    restart: unless-stopped
+    ports:
+      - 8081:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    deploy:
+      mode: global
+    restart: unless-stopped
+    ports:
+      - 9100:9100
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 8082:3000
+    volumes:
+    - grafana_data:/var/lib/grafana
+    - grafana_plugins:/var/lib/grafana/plugins
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=P4ssW0rd0!
+    depends_on:
+      - prometheus
+      - cadvisor
+      - node-exporter
 
-
-# Node exporter
-# docker run -d --name node_exporter -p 9100:9100 \
-# --user 998:998 -v "/:/hostfs:ro,rslave" --network=host prom/node-exporter --path.rootfs=/hostfs
-
-# Prom
-# docker run -d --name prometheus -p 9090:9090 --user 999:999 --network=host \
-# -v /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
-# -v /data/prometheus:/data/prometheus prom/prometheus --config.file="/etc/prometheus/prometheus.yml" \
-# --storage.tsdb.path="/data/prometheus"
-
-# Grafana
-# docker run -d --name grafana -p 3000:3000 --user 997:997 --network=host grafana/grafana
+volumes:
+  data:
+  grafana_data:
+  grafana_plugins:
