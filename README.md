@@ -2,7 +2,7 @@
 
 ## Overview
 
-A featureful repository that demo's various techs and tools used within [Yamkela Kutu's](https://github.com/ymkl) home monitoring setup that has a server and a personal laptop.
+A featureful repository that demo's various techs and tools used within [Yamkela Kutu's](https://github.com/ymkl) and [Musa Zwane's](https://github.com/MusaZwane) home monitoring setup that has a server and a personal laptop.
 
 ## Documentation
 
