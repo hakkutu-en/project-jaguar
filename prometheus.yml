@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 15s
+  evaluation_interval: 15s
+ 
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - prometheus_main:9090
+ 
+  - job_name: nodes
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - [MANAGER]:9100
+      - [WORKER1]:9100
+      - [WORKER2]:9100
+ 
+  - job_name: cadvisor
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - [MANAGER]:8081
+      - [WORKER1]:8081
+      - [WORKER2]:8081
