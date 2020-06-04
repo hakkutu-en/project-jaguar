@@ -53,6 +53,10 @@ services:
     - grafana_plugins:/var/lib/grafana/plugins
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=P4ssW0rd0!
+      - VIRTUAL_PROTO=https
+      - GF_SERVER_CERT_FILE=<CERT>
+      - GF_SERVER_CERT_KEY=<KEY>
+      - GF_SERVER_PROTOCOL=https
     depends_on:
       - prometheus
       - cadvisor
