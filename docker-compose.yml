@@ -51,11 +51,12 @@ services:
     volumes:
     - grafana_data:/var/lib/grafana
     - grafana_plugins:/var/lib/grafana/plugins
+    - ./certs:/etc/ssl/cert/
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=P4ssW0rd0!
       - VIRTUAL_PROTO=https
-      - GF_SERVER_CERT_FILE=<CERT>
-      - GF_SERVER_CERT_KEY=<KEY>
+      - GF_SERVER_CERT_FILE=/etc/ssl/cert/home.crt
+      - GF_SERVER_CERT_KEY=/etc/ssl/cert/home.key
       - GF_SERVER_PROTOCOL=https
     depends_on:
       - prometheus
@@ -64,12 +65,12 @@ services:
   
   nginx:
     image: nginx:latest
+    container_name: reverse_proxy
     volumes:
     - <PATH>/nginx.conf:/etc/nginx/nginx.conf:rw
     restart: unless-stopped
     ports:
     - 8083:80
-
 
 volumes:
   data:
