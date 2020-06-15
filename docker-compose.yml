@@ -62,12 +62,11 @@ services:
       - prometheus
       - cadvisor
       - node-exporter
-  
   nginx:
     image: nginx:latest
     container_name: reverse_proxy
     volumes:
-    - <PATH>/nginx.conf:/etc/nginx/nginx.conf:rw
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf:rw
     - ./certs/:/etc/ssl/
     - ./secrets:/etc/secrets/
     restart: unless-stopped
