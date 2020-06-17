@@ -16,8 +16,6 @@ services:
   cadvisor:
     image: google/cadvisor:latest
     container_name: cadvisor
-    deploy:
-      mode: global
     restart: unless-stopped
     ports:
       - 8081:8080
@@ -29,8 +27,6 @@ services:
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
-    deploy:
-      mode: global
     restart: unless-stopped
     ports:
       - 9100:9100
